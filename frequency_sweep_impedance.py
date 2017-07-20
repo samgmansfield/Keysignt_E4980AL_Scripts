@@ -6,7 +6,7 @@
 #
 # Author: Sam Mansfield
 
-#import visa
+import visa
 import numpy as np
 from matplotlib import pyplot as plt
 import re

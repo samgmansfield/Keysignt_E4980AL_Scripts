@@ -2,7 +2,7 @@ This directory contains Python scripts that can be used to send SCPI commands us
 to the Keysight E4980AL LCR Meter.
 
 Dependencies: PyVisa
-Install pyVisa:
+Install PyVisa:
   https://pyvisa.readthedocs.io/en/stable/
   PyVisa is the SCPI command python library. To install via conda type:
 	  >> conda install -c conda-forge pyvisa=1.8
