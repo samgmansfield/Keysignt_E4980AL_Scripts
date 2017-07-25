@@ -33,7 +33,9 @@ if len(sys.argv) != 2 and len(sys.argv) != 6:
 file_name = sys.argv[1]
 if os.path.exists(file_name):
   print("File already exists: " + file_name)
-  exit()
+  overwrite = raw_input("Overwrite? (y/n) ")
+  if overwrite != "y":
+    exit()
 
 # Lowest frequency is 20Hz, highest frequency is 2MHz
 fi = 20
@@ -117,28 +119,29 @@ for i in range(len(freq_list)):
 f.close()
 
 # Graph the impedance vs. frequency
-plt.plot(freq_list, r_list, label = "real")
-plt.xlim(fi, ff)
-plt.xscale("log")
-plt.xlabel("Frequency (Hz)")
-plt.ylabel("Impedance (Ohms)")
+#plt.plot(freq_list, r_list, label = "real")
+#plt.xlim(fi, ff)
+#plt.xscale("log")
+#plt.xlabel("Frequency (Hz)")
+#plt.ylabel("Impedance (Ohms)")
 #plt.plot(freq_list, x_list, label = "imaginary")
 
-plt.legend()
-plt.show()
+#plt.legend()
+#plt.show()
 
 # Two sets of axes example
-#fig, ax1 = plt.subplots()
-#t = np.arange(0.01, 10.0, 0.01)
-#s1 = np.exp(t)
-#ax1.plot(t, s1, 'b-')
-#ax1.set_xlabel('time (s)')
+fig, ax1 = plt.subplots()
+ax1.scatter(freq_list, r_list, label="real", color="b")
+ax1.set_xlabel('Frequency (Hz)')
 ## Make the y-axis label, ticks and tick labels match the line color.
-#ax1.set_ylabel('exp', color='b')
-#ax1.tick_params('y', colors='b')
-#
-#ax2 = ax1.twinx()
-#s2 = np.sin(2 * np.pi * t)
-#ax2.plot(t, s2, 'r.')
-#ax2.set_ylabel('sin', color='r')
-#ax2.tick_params('y', colors='r')
+ax1.set_ylabel("Ohms", color="b")
+ax1.tick_params('y', colors="b")
+
+ax2 = ax1.twinx()
+ax2.scatter(freq_list, x_list, label="imag", color="r")
+ax2.set_ylabel("Siemens", color="r")
+ax2.tick_params('y', colors="r")
+
+plt.xlim(fi, ff)
+plt.xscale("log")
+plt.show()
