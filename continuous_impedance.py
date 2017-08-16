@@ -88,7 +88,7 @@ while True:
       exit()
   
   # Write timestamp
-  f.write(datetime.datetime.now())
+  f.write(str(datetime.datetime.now()))
   f.write(", ")
   f.write(np.mean(r_samples))
   f.write(", ")
