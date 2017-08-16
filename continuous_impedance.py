@@ -90,13 +90,13 @@ while True:
   # Write timestamp
   f.write(str(datetime.datetime.now()))
   f.write(", ")
-  f.write(np.mean(r_samples))
+  f.write(str(np.mean(r_samples)))
   f.write(", ")
-  f.write(np.mean(x_samples))
+  f.write(str(np.mean(x_samples)))
   f.write(", ")
-  f.write(np.mean(z_samples))
+  f.write(str(np.mean(z_samples)))
   f.write(", ")
-  f.write(np.mean(d_samples))
+  f.write(str(np.mean(d_samples)))
   f.write("\n")
 
 # This will never happen in the current implementation
