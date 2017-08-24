@@ -43,61 +43,49 @@ print(inst.query("*IDN?"))
 inst.write(":VOLTage:LEVel " + str(voltage))
 print("Voltage set to: " + str(voltage))
 
-inst.write(":FREQuency:CW " + freq)
-print("Frequency set to: " + freq)
+#inst.write(":FREQuency:CW " + freq)
+#print("Frequency set to: " + freq)
+
+# Set sweep mode to sequence, set by default
+
+# Generate a frequency string of values as an input to :LIST:FREQuency
+freq_str = freq
+for i in range(200):
+  freq_str += "," + freq
+inst.write(":LIST:FREQuency " + freq_str)
+
+inst.write(":FUNCtion:IMPedance:TYPE RX")
 
 r_samples = []
 x_samples = []
-z_samples = []
-d_samples = []
 # Open file for writing
 f = open(file_name, "w")
-f.write("Timestamp, Frequency, R, X, Z, Phase\n")
+f.write("Timestamp, R, X\n")
 # Loops forever, must be killed using ^C
 while True:
-  for i in range(num_of_samples):
-    inst.write(":FUNCtion:IMPedance:TYPE RX")
-    inst.write(":TRIGger:IMMediate")
-    #imped = inst.query(":FETCh:IMPedance:CORRected?")
-    rx = inst.query(":FETCh:IMPedance:FORMatted?")
-    #print(imped)
-    m = re.search("(.+),(.+),.+", rx)
-    if m:
-      # By experimentation units are in ohms
-      r = float(m.group(1))
-      x = float(m.group(2))
-      r_samples.append(r)
-      x_samples.append(x)
-    else:
-      print("Unrecognized output: " + str(rx))
-      exit()
-  
-    inst.write(":FUNCtion:IMPedance:TYPE ZTD")
-    inst.write(":TRIGger:IMMediate")
-    ztd = inst.query(":FETCh:IMPedance:FORMatted?")
-    #print(imped)
-    m = re.search("(.+),(.+),.+", ztd)
-    if m:
-      # By experimentation units are in ohms
-      z = float(m.group(1))
-      d = float(m.group(2))
-      z_samples.append(z)
-      d_samples.append(d)
-    else:
-      print("Unrecognized output: " + str(ztd))
-      exit()
-  
-  # Write timestamp
-  f.write(str(datetime.datetime.now()))
-  f.write(", ")
-  f.write(str(np.mean(r_samples)))
-  f.write(", ")
-  f.write(str(np.mean(x_samples)))
-  f.write(", ")
-  f.write(str(np.mean(z_samples)))
-  f.write(", ")
-  f.write(str(np.mean(d_samples)))
-  f.write("\n")
+  inst.write(":TRIGger:IMMediate")
+  #imped = inst.query(":FETCh:IMPedance:CORRected?")
+  rx = inst.query(":FETCh:IMPedance:FORMatted?")
+  #print(imped)
+  print(rx)
+  #m = re.search("(.+),(.+),.+", rx)
+  #if m:
+  #  # By experimentation units are in ohms
+  #  r = float(m.group(1))
+  #  x = float(m.group(2))
+  #  r_samples.append(r)
+  #  x_samples.append(x)
+  #else:
+  #  print("Unrecognized output: " + str(rx))
+  #  exit()
+  #
+  ## Write timestamp
+  #f.write(str(datetime.datetime.now()))
+  #f.write(", ")
+  #f.write(str(np.mean(r_samples)))
+  #f.write(", ")
+  #f.write(str(np.mean(x_samples)))
+  #f.write("\n")
 
 # This will never happen in the current implementation
 f.close()
